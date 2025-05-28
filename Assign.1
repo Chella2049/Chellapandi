@@ -1,0 +1,26 @@
+
+!pip install gradio
+import gradio as gr
+from transformers import pipeline
+
+# Load sentiment analysis model
+sentiment_pipeline = pipeline("sentiment-analysis")
+
+# Function to analyze sentiment
+def analyze_sentiment(text):
+    result = sentiment_pipeline(text)[0]
+    label = result['label']
+    score = result['score']
+    return f"Sentiment: {label} (Confidence: {score:.2f})"
+
+# Gradio interface
+iface = gr.Interface(
+    fn=analyze_sentiment,
+    inputs=gr.Textbox(lines=4, placeholder="Enter your thoughts on climate change..."),
+    outputs="text",
+    title="🌍 Climate Change Sentiment Analyzer",
+    description="Enter a sentence or paragraph about climate change to see its sentiment."
+)
+
+# Launch the app
+iface.launch()
